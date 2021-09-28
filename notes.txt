@@ -1,0 +1,5 @@
+request is read by node in multiple parts,to work with those we use buffer(is a construct which allows us to hold multiple chunks and work with them before they are released)
+
+
+
+
