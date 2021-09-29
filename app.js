@@ -1,6 +1,6 @@
-//  module -- set of function we want to include in our application)
+//module -- set of function we want to include in our application)
 //core/built-in modules(hhtphttps,os,fs,path,etc...) -- (can be used without any installation)
-// require() -- function to import the module or takes path to another file
+//require() -- function to import the module or takes path to another file
 const http = require("http");
 
 const routes = require('./routes');
@@ -16,13 +16,9 @@ const routes = require('./routes');
 // }) passing anonymous function to create server, executed whenever a request reaches server //event driven architecture (if requets comes, execute this function)
 
 //req is an object containing information about the http request that raised the event in response to req, we use res to send back response.
+
 const server = http.createServer(routes);
   // console.log(req.url,req.method,req.headers);
   // process.exit(); //stops our event loop
- 
-
-  
 server.listen(3000); // it keeps on listening for request on server , specifies the port we want to listen to
 
-//request is read by node in multiple parts , to work with those we use buffer(is a construct which allows us to hold multiple chunks and work with them before they are released)
-//

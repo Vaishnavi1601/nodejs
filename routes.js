@@ -1,8 +1,10 @@
-const fs = require("fs");
+const fs = require("fs");   //working with filesystem
 
 const requestHandler = (req, res) => {
-  const url = req.url;
-  const method = req.method;
+  const url = req.url;   
+  const method = req.method; 
+  // console.log(url);
+  // console.log(method);
 
   if (url === "/") {
     res.write("<html>");
@@ -13,16 +15,21 @@ const requestHandler = (req, res) => {
     res.write("</html>");
     return res.end();
   }
+  
   if (url === "/message" && method === "POST") {
     const body = [];
-    req.on("data", (chunk) => {
+
+    req.on("data", (chunk) => {  //event listener ... on allows us to listen to certain event, function to be executed on every incoming data
       console.log(chunk);
       body.push(chunk);
     });
+    
+    //request is read by node in multiple parts  and we work on individual chunk
 
-    req.on("end", () => {
-      const parseBody = Buffer.concat(body).toString();
-      const message = parseBody.split("=")[1];
+    req.on("end", () => {     // exccuted once the data parsing is done
+      const parsedBody = Buffer.concat(body).toString(); //buffer allows us to hold multiple chunks and work with them
+     // console.log(parsedBody);
+      const message = parsedBody.split("=")[1];
       fs.writeFileSync("message.txt", message);
     });
 
@@ -31,6 +38,7 @@ const requestHandler = (req, res) => {
     res.setHeader("Location", "/");
     return res.end();
   }
+
   res.setHeader("Content-text", "text/html");
   res.write("<html>");
   res.write("<head><title>First page</title></head>");

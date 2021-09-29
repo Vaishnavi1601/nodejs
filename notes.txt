@@ -1,5 +1,6 @@
-request is read by node in multiple parts,to work with those we use buffer(is a construct which allows us to hold multiple chunks and work with them before they are released)
-
-
-
+packages can be divided into development packages(helps during development) and production dependencies(helps us for the app running on the server)
+npm init -- adds package.json 
+--save - install as a production dependency
+--save-dev - add something we used during development , installed into project not globally not  machine 
+-g install globally on machine
 
