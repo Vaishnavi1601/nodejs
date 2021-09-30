@@ -1,6 +1,8 @@
-packages can be divided into development packages(helps during development) and production dependencies(helps us for the app running on the server)
-npm init -- adds package.json 
---save - install as a production dependency
---save-dev - add something we used during development , installed into project not globally not  machine 
--g install globally on machine
+An Express application is essentially a series of middleware function calls.
+
+Middleware functions are functions that have access to the request object (req), the response object (res),
+and the next middleware function in the application’s request-response cycle.
+
+Route is a section of Express code that associates an HTTP verb (GET, POST, PUT, DELETE, etc.), 
+a URL path/pattern, and a function that is called to handle that pattern.
 
