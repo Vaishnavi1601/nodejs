@@ -4,18 +4,24 @@ const express = require("express");
 
 const rootDir = require("../util/path");
 
-//importing Router
-const router = express.Router(); //express object has a Router() method that creates a new router object.
+const router = express.Router(); //importing Router, express object has a Router() method, creates a new router object.
+
+const products = [];
 
 // executed for get request
 router.get("/add-product", (req, res, next) => {
-  res.sendFile(path.join(rootDir, "views", "add-product.html")); //send allows us to send our response
+  res.render("add-product", {
+    pageTitle: "Add Product",
+    path: "/admin/add-product",
+  });
+  // res.sendFile(path.join(rootDir, "views", "add-product.html")); //send allows us to send our response
 });
 
 // executed for post request
 router.post("/add-product", (req, res, next) => {
-  console.log(req.body);
+  products.push({ title: req.body.title }); //extracting title
   res.redirect("/"); //redirect to / route
 });
 
-module.exports = router;
+exports.routes = router;
+exports.products = products;

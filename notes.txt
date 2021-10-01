@@ -1,8 +1,8 @@
-An Express application is essentially a series of middleware function calls.
+Managing Data
+Rendering Dynamic contents in views
+Understanding templating engines
 
-Middleware functions are functions that have access to the request object (req), the response object (res),
-and the next middleware function in the application’s request-response cycle.
-
-Route is a section of Express code that associates an HTTP verb (GET, POST, PUT, DELETE, etc.), 
-a URL path/pattern, and a function that is called to handle that pattern.
-
+Templating engines  -- EJS(embedded javascript templating),  Pug , handlebars
+set allows us to set any value globally on our application
+view engine--for any dynamic content we are rendering please use this registerd engine
+view -- allows us to tell express where to find these dynamic views , paths

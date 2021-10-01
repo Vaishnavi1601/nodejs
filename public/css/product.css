@@ -15,22 +15,27 @@
 }
 
 .form-control input {
-  border: 1px solid #dbc441;
+  border: 1px solid #00695c;
   font: inherit;
   border-radius: 2px;
 }
 
-button {
-  font: inherit;
-  border: 1px solid #3e00a1;
-  color: #3e00a1;
-  background: white;
-  border-radius: 3px;
-  cursor: pointer;
+.product-item {
+  width: 20rem;
+  max-width: 95%;
 }
 
-button:hover,
-button:active {
-  background-color: #3e00a1;
-  color: white;
+.product__title {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.product__price {
+  text-align: center;
+  color: #4d4d4d;
+  margin-bottom: 0.5rem;
+}
+
+.product__description {
+  text-align: center;
 }
