@@ -4,22 +4,6 @@
   margin: auto;
 }
 
-.form-control {
-  margin: 1rem 0;
-}
-
-.form-control label,
-.form-control input {
-  display: block;
-  width: 100%;
-}
-
-.form-control input {
-  border: 1px solid #00695c;
-  font: inherit;
-  border-radius: 2px;
-}
-
 .product-item {
   width: 20rem;
   max-width: 95%;
