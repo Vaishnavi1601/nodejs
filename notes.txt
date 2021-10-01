@@ -6,3 +6,10 @@ Templating engines  -- EJS(embedded javascript templating),  Pug , handlebars
 set allows us to set any value globally on our application
 view engine--for any dynamic content we are rendering please use this registerd engine
 view -- allows us to tell express where to find these dynamic views , paths
+
+
+
+
+
+
+

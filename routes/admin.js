@@ -12,10 +12,9 @@ const products = [];
 router.get("/add-product", (req, res, next) => {
   res.render("add-product", {
     pageTitle: "Add Product",
-    path: "/admin/add-product",
+    path:"/admin/add-product",
   });
-  // res.sendFile(path.join(rootDir, "views", "add-product.html")); //send allows us to send our response
-});
+}); //render method provided by express, it will use default templating engine(ejs) and return that template,
 
 // executed for post request
 router.post("/add-product", (req, res, next) => {
