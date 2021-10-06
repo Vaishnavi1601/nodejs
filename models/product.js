@@ -1,35 +1,31 @@
-const Cart = require('./cart');
+const Sequelize = require('sequelize');  //importing  sequelize , it will return bacl a class or constructor function 
 
-const db = require('../util/database');
+const sequelize = require('../util/database');
 
-module.exports = class Product {
-  constructor(id, title, imageUrl, description, price) {
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
+// model that will be managed by sequelize
+
+const Product =sequelize.define('product', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  title: Sequelize.STRING,
+  price: {
+    type:Sequelize.DOUBLE,
+    allowNull:false,
+  },
+  imageUrl: {
+    type:Sequelize.STRING,
+    allowNull:false
+  },
+  description:{
+    type:Sequelize.STRING,
+    allowNull: false
   }
+});
 
-  save() {
-   return db.execute('INSERT INTO products (title, price, description, imageUrl) VALUES (?, ?, ?, ?)', 
-   [this.title, this.price, this.description, this.imageUrl]
-   );
-  }
+ 
 
-  static deleteById(id) {
-    
-    
-  }
-
-  static fetchAll(cb) {
-   return db.execute('SELECT * FROM products')
-    
-    
-  }
-
-  static findById(id, cb) {
-    return db.execute('SELECT * FROM products WHERE products.id = ?',[id])
-   
-  }
-};
+module.exports = Product;
