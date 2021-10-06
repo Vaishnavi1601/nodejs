@@ -13,6 +13,7 @@ app.set("views", "views");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
+
 const Product = require("./models/product");
 const User = require('./models/user')
 const Cart = require('./models/cart')
@@ -38,13 +39,17 @@ Order.belongsTo(User);
 User.hasMany(Order);
 Order.belongsToMany(Product, {through: OrderItem})
 
-
-
 sequelize
-  .sync({ force: true })
+  .sync()
+
   .then((result) => {
     app.listen(3000); 
   })
+
   .catch((err) => {
     console.log(err);
   }); //sync method keep track of all the models we define and then basically creates table for them
+
+
+
+  
