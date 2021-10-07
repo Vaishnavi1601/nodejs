@@ -45,9 +45,11 @@ exports.getCart = (req, res, next) => {
   req.user
     .getCart()
     .then((cart) => {
+      console.log(cart);
       return cart
-        .getProducts()
+        .getProducts() //added by sequelize as a method
         .then((products) => {
+          console.log(products);
           res.render("shop/cart", {
             path: "/cart",
             pageTitle: "Your Cart",

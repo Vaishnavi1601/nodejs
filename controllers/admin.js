@@ -79,8 +79,8 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
-    // .getProducts()
+  req.user
+    .getProducts()   //it will give all rpoduct for that user
     .then((products) => {
       res.render("admin/products", {
         prods: products,
