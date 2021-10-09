@@ -17,20 +17,13 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
 
-  req.user
-    //seuqlize adds special method depending on the association we added
-    // for belongsTo(app.js)  it adds method that allow us to creat enew associated object
-    // createProduct -- bcz Product is name of our model and create  is added automatically at the beginnning of method name
-    .createProduct({
-      // we are getting createProduct method through our sequelize object and this will create a connected model (product and user)
-
-      //id will be managed automatically
-      title: title,
-      price: price,
-      imageUrl: imageUrl,
-      description: description,
-    })
-    .then((result) => {
+  //creating new product 
+  //by intialising product
+  const product = new Product(title,price,description,imageUrl)
+  // console.log(product);
+  //
+  product.save()  // to call "then" we goto Product model and we retuern collection and then redirect to products 
+  .then((result) => {
       console.log("Created Product");
       res.redirect("/admin/products");
     })
