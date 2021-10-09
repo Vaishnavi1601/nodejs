@@ -112,19 +112,18 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  //get cart for the user 
+  //get cart for the user
   req.user
     .getCart()
-    
+
     .then((cart) => {
       //we got access to cart and in that cart find product with that productId for this user
       return cart.getProducts({ where: { id: prodId } });
     })
     .then((products) => {
-
       const product = products[0];
       //destroying product not in product table but in cartItem table that connects  cart with that product
-      return product.cartItem.destroy(); 
+      return product.cartItem.destroy();
     })
     .then((result) => {
       res.redirect("/cart");
@@ -138,33 +137,36 @@ exports.postCartDeleteProduct = (req, res, next) => {
 exports.postOrder = (req, res, next) => {
   let fetchedCart;
   req.user
-  //get all the cart items
+    //get all the cart items
     .getCart()
     .then((cart) => {
       fetchedCart = cart; // storing the cartitem in fetchedCart
-      return cart.getProducts();  //returns all products in the cart
+      return cart.getProducts(); //returns all products in the cart
     })
 
     //with access to the cart we can get access to the products,
-    //aftr getting access to product move the product into newly created ordre
+    //aftr getting access to product move the product into created order
     .then((products) => {
-      return req.user
-        .createOrder()   //this gives us an order and now we need to add products to that order
-        .then((order) => {
+      return (
+        req.user
 
-          //order.addProducts(Products)  //passing products to created order, also we need to set quantity for products
-          //each product have special id and to assign that the products we pass here need to be modified-- done with map method
+          //we create order to that user
+          .createOrder() //this gives us an order and now we need to add products to that order
+          .then((order) => {
+            //order.addProducts(Products)  //passing products to created order, also we need to set quantity for products
+            //each product have special id and to assign that the products we pass here need to be modified-- done with map method
 
-          return order.addProducts(
-            products.map((product) => {
-             //adding new object quantity to orderItem(table)
-              product.orderItem = { quantity: product.cartItem.quantity }; //get quantity from the cart and store thaht for order item
-              //return product with the added quantity for order
-              return product;
-            })
-          );
-        })
-        .catch((err) => console.log(err));
+            return order.addProducts(
+              products.map((product) => {
+                //adding new object quantity to orderItem(table)
+                product.orderItem = { quantity: product.cartItem.quantity }; //get quantity from the cart and store thaht for order item
+                //return product with the added quantity for order
+                return product;
+              })
+            );
+          })
+          .catch((err) => console.log(err))
+      );
     })
     .then((result) => {
       //dropiing all the items in the cart by settuing them to null,--- clearing the cart
@@ -177,9 +179,9 @@ exports.postOrder = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user 
-  //get orders of user
-    .getOrders({ include: ["products"] }) //fetching all products realted to that order, gives back array of products per order 
+  req.user
+    //get orders of user
+    .getOrders({ include: ["products"] }) //fetching all products realted to that order, gives back array of products per order
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
