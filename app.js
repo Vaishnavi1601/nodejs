@@ -4,7 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const errorController = require("./controllers/error");
-const mongoConnect = require("./util/database"); // importing function
+const mongoConnect = require("./util/database").mongoConnect; // importing function
 
 const app = express();
 
@@ -15,7 +15,7 @@ const adminRoutes = require("./routes/admin");
 // const shopRoutes = require("./routes/shop");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));  
 
 app.use((req, res, next) => {
   //rech out to DB and  retrieve user with userid 1
@@ -27,6 +27,7 @@ app.use((req, res, next) => {
   //   .catch((err) => {
   //     console.log(err);
   //   });
+  next();
 });
 
 app.use("/admin", adminRoutes);

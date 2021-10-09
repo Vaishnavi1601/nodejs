@@ -13,33 +13,20 @@ class Product {
 
   //to save created product in db we use save method
   save() {
-    
+    //accessing database by calling getDdb
+
+    //1.database
+    const db = getDb() 
+
+    //2.collection and document
+    //here we can call collection to tell mogodb into which collection we want to insert something
+    db.collection('products')
+    .insertOne(this)  // insertOne because we want to insert only one product, 
+    //it only takes the object we want to insert, here we want to insert "product" so we use this
   }
 }
 
-// model that will be managed by sequelize
-//"product" name of our model and second argument defines structure of our model and also automatically created db table
 
-const Product = sequelize.define("product", {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  },
-  title: Sequelize.STRING,
-  price: {
-    type: Sequelize.DOUBLE,
-    allowNull: false,
-  },
-  imageUrl: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
-});
+
 
 module.exports = Product;
