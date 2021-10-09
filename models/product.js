@@ -32,8 +32,28 @@ class Product {
     });
   
   }
+
+  //get product in products page
+  static fetchAll() {
+    const db = getDb() ;  //acessing db 
+
+    return db.collection('products').find()//find doesnt retirn a prommise instead it returns a cursor
+    // cursor is a object  provided by mongodb which allows us to go through our elements 
+    // find gives us a handle which we can use to tell mdb to give the next document
+    // there's toArray method -- to get all documents and turn them into js array (used only when we have some documents  otherwise we use pagination)
+    .toArray() //this returns a promise
+    .then(products => {
+      console.log(products);
+      return products;
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }
 }
 
+
+//get products by adidng static method
 
 
 

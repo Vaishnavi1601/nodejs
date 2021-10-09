@@ -1,7 +1,8 @@
 const Product = require("../models/product");
 
 exports.getProducts = (req, res, next) => {
-  Product.findAll()
+  Product.fetchAll() //here we will get the products
+
     .then((products) => {
       res.render("shop/product-list", {
         prods: products,
@@ -29,7 +30,7 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.findAll() //getting all the data for Product model
+  Product.fetchAll() //getting all the data for Product model
     // in then block we have product array
     .then((products) => {
       console.log(products);
