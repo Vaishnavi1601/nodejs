@@ -18,7 +18,8 @@ exports.getProducts = (req, res, next) => {
 //retrieve single product when we click on details
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId; // we get productId here
-  Product.findByPk(prodId)
+
+  Product.findById(prodId)
     .then((product) => {
       res.render("shop/product-detail", {
         product: product,
