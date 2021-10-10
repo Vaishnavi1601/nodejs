@@ -4,7 +4,9 @@ const mongodb = require("mongodb");
 const getDb = require("../util/database").getDb; // we can call this function to get access to our databse
 
 //creating new Product(object)
+//class declaration creates a new class with a given name
 class Product {
+  //constructor method is a special method of a class for creating and initializing an object instance of that class.
   //storing title,price,desc,imageurl when it gets created
   constructor(title, price, description, imageUrl, id) {
     this.title = title;
@@ -27,6 +29,7 @@ class Product {
       //check if _id is set then update the prosuct
       //Update the product
       dbOp = db //connection to database
+      //2.collection
         .collection("products")
         //updateOne takes two argument,
         //1st - we add filter that defines which elemnt or document we want to update
@@ -36,7 +39,7 @@ class Product {
         .updateOne({ _id: this._id }, { $set: this }); //searching for id that matches the id we have in product
     } else {
       dbOp = db //connection to database
-        //2.collection
+        
         .collection("products")
         .insertOne(this);
     }
@@ -93,6 +96,24 @@ class Product {
         console.log(err);
       });
   }
+
+  //static keyword defines a static method,
+  //static methods are functions to create or clone objects
+  static deleteById(prodId) {
+    const db = getDb();
+    return db.collection('products').deleteOne({_id: new mongodb.ObjectId(prodId) })
+    .then(result => {
+      console.log("Deleted");
+    })
+    .catch(err => {
+      console.log(err);
+    })
+
+  }
+
+
+
+
 }
 
 //get products by adidng static method

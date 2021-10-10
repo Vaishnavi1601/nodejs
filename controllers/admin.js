@@ -1,7 +1,7 @@
 const mongodb = require("mongodb");
 const Product = require("../models/product");
 
-// const ObjectId = mongodb.ObjectId;  //extracting objectId constructor out of mdb 
+// const ObjectId = mongodb.ObjectId;  //extracting objectId constructor out of mdb
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -75,7 +75,7 @@ exports.postEditProduct = (req, res, next) => {
     updatedDesc,
     updatedImageUrl,
     // new ObjectId(prodId) //passing  an objectId from admin contrller to  Product cinstructor
-   //we can also pass it as a string
+    //we can also pass it as a string
     prodId
   );
 
@@ -106,20 +106,15 @@ exports.getProducts = (req, res, next) => {
 };
 
 //deleting product
-// exports.postDeleteProduct = (req, res, next) => {
-//   const prodId = req.body.productId;
-//   Product.findByPk(prodId) //finding product by id
-//     //now we have our product and on that product we can call destroy method
-//     .then((product) => {
-//       return product.destroy();
-//     })
+exports.postDeleteProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  Product.deleteById(prodId)
 
-//     //this then block will will execute if the destruction succeeded
-//     .then((result) => {
-//       console.log("DESTROYED PRODUCT");
-//       res.redirect("/admin/products");
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// };
+    .then(() => {
+      console.log("DESTROYED PRODUCT");
+      res.redirect("/admin/products");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
