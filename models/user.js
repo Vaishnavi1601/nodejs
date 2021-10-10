@@ -20,30 +20,50 @@ class User {
   }
 
   addToCart(product) {
+    // console.log(23,product);
     //here we get  the product we want to add to cart
-    // const cartProduct = this.cart.items.findIndex
+    //findIndex method returns the index of the first element in the array
+    const cartProductIndex = this.cart.items.findIndex;
+    // console.log(26,cartProductIndex);
+    //check if product already in cart
     //function that will be executed for every elemts in an item array
-    //cp is the product item in th eitem array
-    //(cp =>{
-    //return trur if found right product in items array
-    //   return cp._id === product._id;
+    //cp --{ productId: new ObjectId("6162806e20e03de7a918a986"), quantity: 1 }
+    (cp =>{
+    // console.log(29,cp);
+    //return true if found right product in items array
+     //we are storing productid in items in cart
+    
+    // return cp.productId === product._id; //this will return true if it match by both value and type  //product._id is not string 
+
+    return cp.productId.toString() === product._id.toString();
     //then we know that product already exists in the cart
-    //and then we need to add quantity for that
+    //we need to add quantity for that
 
-    // });
+     });
 
-    //finout if cart contains certain product already
-
-    //firstky we assume there are no prduct sin the cxart
-    //so  we are adding product here w/o checking if product already exists
-
-    //updatedCart -- an object where we have items property which is an an array
-    //and will include product also the quantity
-
-    //...product -- pull out all the properties of product object and adding a new property i.e quantity:1
-
-    //updatedCart will create an object whoch holds an items property which is array of only one product
-    const updatedCart = { items: [{productId: new ObjectId(product._id), quantity: 1 }] };
+     let newQuantity = 1;
+    
+     const updatedCartItems = [...this.cart.items];//storing all the cart items to updatedacrtiTems
+     //so updatedCartItems gives us array of all the items in the cart
+     //and we can now edit the old array without modifyimg the old array(js-reference and primitive type)
+     //findout if cart contains certain product already
+    
+     //updatedCart will create an object whoch holds an items property which is array of only one product
+    
+    //updating the quantity of item if it already exist
+    if (cartProductIndex >=0){
+      newQuantity = this.cart.items[cartProductIndex].quantity +1;
+      updatedCartItems[cartProductIndex].quantity = newQuantity;
+    
+    }
+    //adding new item to the cart
+    else{
+      updatedCartItems.push({productId: new ObjectId(product._id), quantity: newQuantity })
+    }
+    
+   //here we have updated cart either with quantity increased or with new item added to cart
+    const updatedCart = {items: updatedCartItems};
+    //ans saving updatedcart to the database with all updated items
     const db = getDb(); //aceessing db
 
     //update the user to store that updatedCart
@@ -51,12 +71,12 @@ class User {
     return db
       .collection("users") // users collection
       .updateOne(
-        // update one user there , with user id line 53
+        // update one user there , with user id 
         { _id: new ObjectId(this._id) }, //finding _id 
         //and if we find that id we need to describe how to upadte
         //we use $set , where we pass an object that holds info about which field to update in which way
         //here cart which have user in db will receive updated cart
-        // so updatedCart will overwrite the old cart with new cart
+        //so updatedCart will overwrite the old cart with new cart
         { $set: { cart: updatedCart } }
       );
   }
@@ -68,8 +88,6 @@ class User {
     return (
       db
         .collection("users")
-        // .find({_id: new mongodb.ObjectId(userId)})
-        // .next()
         .findOne({ _id: mongodb.ObjectId(userId) })
         .then((user) => {
           console.log(user);
@@ -80,11 +98,6 @@ class User {
         })
     );
   }
-
-  // static findbyId(userId) {
-  //   const db = getDb();
-  //   return db.collection('users').findOne({_id: mongodb.ObjectId(userId)});
-  // }
 }
 
 module.exports = User;
