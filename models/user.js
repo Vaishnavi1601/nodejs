@@ -121,6 +121,22 @@ class User {
     // and therefore for every id which is in array  will be accepted and will get a cursor which holds reference to all products with one of the Ids mentioned in this array
  }
 
+ deleteItemFromCart(productId){
+   const updatedCartItems = this.cart.items.filter(item =>{   // filter runs on every element(item) in the items 
+    //and we return true if we want to keep that item in array and false if we want to get rid of it
+    //
+     //filter allow us to define a criteria on how we want to filter the elemnts in array 
+     return item.productId.toString() !== productId.toString();  //this should return false for deleting
+   });
+
+   const db = getDb();
+
+   //this will update the 
+   return db .collection('users').updateOne(
+     {_id: new ObjectId(this._id)},
+     { $set: {cart: {items: updatedCartItems}}}
+   )
+ }
 
   //finding user by userId
   static findById(userId) {

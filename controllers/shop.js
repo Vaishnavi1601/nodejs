@@ -81,19 +81,11 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  //get cart for the user
+  
   req.user
-    .getCart()
+    .deleteItemFromCart(prodId)
 
-    .then((cart) => {
-      //we got access to cart and in that cart find product with that productId for this user
-      return cart.getProducts({ where: { id: prodId } });
-    })
-    .then((products) => {
-      const product = products[0];
-      //destroying product not in product table but in cartItem table that connects  cart with that product
-      return product.cartItem.destroy();
-    })
+    
     .then((result) => {
       res.redirect("/cart");
     })
