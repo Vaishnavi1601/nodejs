@@ -11,7 +11,7 @@ class Product {
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
-    this._id = id;
+    this._id = new mongodb.ObjectId(id);
   }
 
   //to save created product in db we use save method
@@ -23,36 +23,36 @@ class Product {
     let dbOp;
 
     if (this._id) {
+      //check if _id is set then update the prosuct
       //Update the product
       dbOp = db //connection to database
         .collection("products")
-        //updateOne takes two argument, 
+        //updateOne takes two argument,
         //1st - we add filter that defines which elemnt or document we want to update
         //2nd - specify how to  update that doucment, its a js object where we describe the update
         //id will not be overwritten
         // $set - it will update the the values of the document in the database with new values
-        .updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: this}); //searching for id that matches the id we have in product
+        .updateOne({ _id: this._id }, { $set: this }); //searching for id that matches the id we have in product
     } else {
       dbOp = db //connection to database
+        //2.collection
         .collection("products")
         .insertOne(this);
     }
 
     //2.collection and document
     //here we can call collection to tell mogodb into which collection we want to insert something
-    return (
-      dbOp = db
-        .collection("products")
-        .insertOne(this) // insertOne because we want to insert only one product,
-        //it only takes the object we want to insert, here we want to insert "product" we use this
+    return (dbOp = db
+      .collection("products")
+      .insertOne(this) // insertOne because we want to insert only one product,
+      //it only takes the object we want to insert, here we want to insert "product" we use this
 
-        .then((result) => {
-          console.log(result);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-    );
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      }));
   }
 
   //get product in products page
@@ -81,6 +81,7 @@ class Product {
     const db = getDb();
     return db
       .collection("products")
+    // ObjectID to create unique identifiers for all the documents in the database.
       .find({ _id: new mongodb.ObjectId(prodId) }) //here we create a new objectId to which we pass a string which will be wrapped by that
       .next()
       .then((product) => {

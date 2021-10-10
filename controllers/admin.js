@@ -1,7 +1,7 @@
 const mongodb = require("mongodb");
 const Product = require("../models/product");
 
-const ObjectId = mongodb.ObjectId;
+// const ObjectId = mongodb.ObjectId;  //extracting objectId constructor out of mdb 
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -35,7 +35,7 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 // firstly we need to load the product that gets edited
-//fetching products that should be edited and then render it
+//geteditproduct is respondible for fetching products that should be edited and then render it
 exports.getEditProduct = (req, res, next) => {
   const editMode = req.query.edit;
 
@@ -68,13 +68,14 @@ exports.postEditProduct = (req, res, next) => {
   const updatedDesc = req.body.description;
 
   const updatedImageUrl = req.body.imageUrl;
-  //create a new product constant by using product constructor
+  //create a new product constant with updated information
   const product = new Product(
     updatedTitle,
     updatedPrice,
     updatedDesc,
     updatedImageUrl,
-    new ObjectId(prodId)
+    // new ObjectId(prodId)
+    prodId
   );
 
   //save method will save the changes to our database
