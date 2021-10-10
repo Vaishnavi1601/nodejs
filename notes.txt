@@ -1,0 +1,4 @@
+for every user we have cart and that cart will hold product
+on user model we also want to store our cart item
+
+on User object we add  new method addToCart
