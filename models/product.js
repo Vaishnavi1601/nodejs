@@ -8,13 +8,14 @@ const getDb = require("../util/database").getDb; // we can call this function to
 class Product {
   //constructor method is a special method of a class for creating and initializing an object instance of that class.
   //storing title,price,desc,imageurl when it gets created
-  constructor(title, price, description, imageUrl, id) {
+  constructor(title, price, description, imageUrl, id, userId) {
     this.title = title;
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
     //converting the id which is string to object
-    this._id = id ? new mongodb.ObjectId(id):null;
+    this._id = id ? new mongodb.ObjectId(id) : null;
+    this.userId  = userId;
   }
 
   //to save created product in db we use save method
@@ -38,18 +39,15 @@ class Product {
         // $set - it will update the the values of the document in the database with new values
         .updateOne({ _id: this._id }, { $set: this }); //searching for id that matches the id we have in product
     } else {
-      dbOp = db //connection to database
-        
-        .collection("products")
-        .insertOne(this);
+      dbOp =  db
+      .collection("products")
+      .insertOne(this) // insertOne because we want to insert only one product,
+      //it only takes the object we want to insert, here we want to insert "product" we use this
     }
 
     //2.collection and document
     //here we can call collection to tell mogodb into which collection we want to insert something
-    return (dbOp = db
-      .collection("products")
-      .insertOne(this) // insertOne because we want to insert only one product,
-      //it only takes the object we want to insert, here we want to insert "product" we use this
+    return (dbOp 
 
       .then((result) => {
         console.log(result);
@@ -81,7 +79,7 @@ class Product {
     );
   }
 
-  static findById(prodId) {
+  static findbyId(prodId) {
     const db = getDb();
     return db
       .collection("products")
@@ -110,10 +108,6 @@ class Product {
     })
 
   }
-
-
-
-
 }
 
 //get products by adidng static method

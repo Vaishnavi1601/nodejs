@@ -1,7 +1,4 @@
-const mongodb = require("mongodb");
 const Product = require("../models/product");
-
-// const ObjectId = mongodb.ObjectId;  //extracting objectId constructor out of mdb
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -19,8 +16,15 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
 
   //creating new product
-  //by intialising product
-  const product = new Product(title, price, description, imageUrl);
+  //by intialising product 
+  const product = new Product(
+    title,
+    price,
+    description,
+    imageUrl,
+    null,
+    req.user._id
+  );
   // console.log(product);
   //
   product
