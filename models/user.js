@@ -23,12 +23,12 @@ class User {
     // console.log(23,product);
     //here we get  the product we want to add to cart
     //findIndex method returns the index of the first element in the array
-    const cartProductIndex = this.cart.items.findIndex;
+    const cartProductIndex = this.cart.items.findIndex
     // console.log(26,cartProductIndex);
     //check if product already in cart
     //function that will be executed for every elemts in an item array
     //cp --{ productId: new ObjectId("6162806e20e03de7a918a986"), quantity: 1 }
-    (cp) => {
+    (cp => {
       // console.log(29,cp);
       //return true if found right product in items array
       //we are storing productid in items in cart
@@ -38,7 +38,7 @@ class User {
       return cp.productId.toString() === product._id.toString();
       //then we know that product already exists in the cart
       //we need to add quantity for that
-    };
+    });
 
     let newQuantity = 1;
 
