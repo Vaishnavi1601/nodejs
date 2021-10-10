@@ -1,6 +1,7 @@
-// const Product = require("../models/product"); //importing product model
-
+const mongodb = require("mongodb");
 const Product = require("../models/product");
+
+const ObjectId = mongodb.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -17,13 +18,14 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
 
-  //creating new product 
+  //creating new product
   //by intialising product
-  const product = new Product(title,price,description,imageUrl)
+  const product = new Product(title, price, description, imageUrl);
   // console.log(product);
   //
-  product.save()  // to call "then" we goto Product model and we retuern collection and then redirect to products 
-  .then((result) => {
+  product
+    .save() // to call "then" we goto Product model and we retuern collection and then redirect to products
+    .then((result) => {
       console.log("Created Product");
       res.redirect("/admin/products");
     })
@@ -32,61 +34,65 @@ exports.postAddProduct = (req, res, next) => {
     });
 };
 
-//firstly we need to load the product that gets edited
-// exports.getEditProduct = (req, res, next) => {
-//   const editMode = req.query.edit;
+// firstly we need to load the product that gets edited
+//fetching products that should be edited and then render it
+exports.getEditProduct = (req, res, next) => {
+  const editMode = req.query.edit;
 
-//   console.log(editMode);
-//   if (!editMode) {
-//     return res.redirect("/");
-//   }
-//   const prodId = req.params.productId;
-//   Product.findByPk(prodId)
-//     .then((product) => {
-//       res.render("admin/edit-product", {
-//         pageTitle: "Edit Product",
-//         path: "/admin/edit-product",
-//         editing: editMode,
-//         product: product,
-//         title: "Update Product",
-//       });
-//     })
-//     .catch((err) => console.log(err));
-// };
+  console.log(editMode);
+  if (!editMode) {
+    return res.redirect("/");
+  }
+  const prodId = req.params.productId;
+  Product.findById(prodId)
+    .then((product) => {
+      if (!product) {
+        return res.redirect("/");
+      }
+      res.render("admin/edit-product", {
+        pageTitle: "Edit Product",
+        path: "/admin/edit-product",
+        editing: editMode,
+        product: product,
+        title: "Update Product",
+      });
+    })
+    .catch((err) => console.log(err));
+};
 
-// //
-// exports.postEditProduct = (req, res, next) => {
-//   const prodId = req.body.productId;
-//   const updatedTitle = req.body.title;
-//   const updatedPrice = req.body.price;
-//   const updatedImageUrl = req.body.imageUrl;
-//   const updatedDesc = req.body.description;
-//   Product.findByPk(prodId)
+//posteditproduct is resonsible for saving the changes to database whi ch we made in edit
+exports.postEditProduct = (req, res, next) => {
+  const prodId = req.body.productId;
+  const updatedTitle = req.body.title;
+  const updatedPrice = req.body.price;
+  const updatedDesc = req.body.description;
 
-//     //working with the product we retrivd and that needs to get updated
-//     .then((product) => {
-//       //this will not change in our DB but will do it locally
-//       product.title = updatedTitle;
-//       product.price = updatedPrice;
-//       product.description = updatedDesc;
-//       product.imageUrl = updatedImageUrl;
+  const updatedImageUrl = req.body.imageUrl;
+  //create a new product constant by using product constructor
+  const product = new Product(
+    updatedTitle,
+    updatedPrice,
+    updatedDesc,
+    updatedImageUrl,
+    new ObjectId(prodId)
+  );
 
-//       //save method will save the changes to our database
-//       //if product doesn't exit it will create new one or else it will update the old with newvalues
+  //save method will save the changes to our database
+  //if product doesn't exit it will create new one or else it will update the old with newvalues
 
-//       return product.save();
-//     })
+  product
+    .save()
 
-//     // this then blockk will handle successful  responses from our save promise
-//     .then((result) => {
-//       console.log("UPDATED PRODUCT!");
-//       res.redirect("/admin/products");
-//     })
-//     .catch((err) => console.log(err));
-// };
+    // this then blockk will handle successful  responses from our save promise
+    .then((result) => {
+      console.log("UPDATED PRODUCT!");
+      res.redirect("/admin/products");
+    })
+    .catch((err) => console.log(err));
+};
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()//it will give all products
+  Product.fetchAll() //it will give all products
     .then((products) => {
       res.render("admin/products", {
         prods: products,

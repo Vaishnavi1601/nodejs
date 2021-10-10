@@ -1,4 +1,4 @@
-const mongodb = require('mongodb');
+const mongodb = require("mongodb");
 
 //connection to mdb
 const getDb = require("../util/database").getDb; // we can call this function to get access to our databse
@@ -6,11 +6,12 @@ const getDb = require("../util/database").getDb; // we can call this function to
 //creating new Product(object)
 class Product {
   //storing title,price,desc,imageurl when it gets created
-  constructor(title, price, description, imageUrl) {
+  constructor(title, price, description, imageUrl, id) {
     this.title = title;
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
+    this._id = id;
   }
 
   //to save created product in db we use save method
@@ -19,11 +20,28 @@ class Product {
 
     //1.database
     const db = getDb();
+    let dbOp;
+
+    if (this._id) {
+      //Update the product
+      dbOp = db //connection to database
+        .collection("products")
+        //updateOne takes two argument, 
+        //1st - we add filter that defines which elemnt or document we want to update
+        //2nd - specify how to  update that doucment, its a js object where we describe the update
+        //id will not be overwritten
+        // $set - it will update the the values of the document in the database with new values
+        .updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: this}); //searching for id that matches the id we have in product
+    } else {
+      dbOp = db //connection to database
+        .collection("products")
+        .insertOne(this);
+    }
 
     //2.collection and document
     //here we can call collection to tell mogodb into which collection we want to insert something
     return (
-      db
+      dbOp = db
         .collection("products")
         .insertOne(this) // insertOne because we want to insert only one product,
         //it only takes the object we want to insert, here we want to insert "product" we use this
@@ -63,9 +81,9 @@ class Product {
     const db = getDb();
     return db
       .collection("products")
-      .find({_id: new mongodb.ObjectId(prodId)}) //here we create a new objectId to which we pass a string which will be wrapped by that
+      .find({ _id: new mongodb.ObjectId(prodId) }) //here we create a new objectId to which we pass a string which will be wrapped by that
       .next()
-      .then(product => {
+      .then((product) => {
         console.log(product);
         return product;
       })
