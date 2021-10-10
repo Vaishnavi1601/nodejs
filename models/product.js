@@ -79,7 +79,7 @@ class Product {
     );
   }
 
-  static findbyId(prodId) {
+  static findById(prodId) {
     const db = getDb();
     return db
       .collection("products")

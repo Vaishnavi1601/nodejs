@@ -1,7 +1,7 @@
 const mongodb = require("mongodb");
 const getDb = require("../util/database").getDb;
 
-// const ObjectId = mongodb.ObjectId;
+const ObjectId = mongodb.ObjectId;
 
 //creating user
 class User {
@@ -43,14 +43,14 @@ class User {
     //...product -- pull out all the properties of product object and adding a new property i.e quantity:1
 
     //updatedCart will create an object whoch holds an items property which is array of only one product
-    const updatedCart = { items: [{ ...product, quantity: 1 }] };
+    const updatedCart = { items: [{productId: new ObjectId(product._id), quantity: 1 }] };
     const db = getDb(); //aceessing db
 
     //update the user to store that updatedCart
     //update the user to add a rpoduct to the cart
     return db
       .collection("users") // users collection
-      .updatedOne(
+      .updateOne(
         // update one user there , with user id line 53
         { _id: new ObjectId(this._id) }, //finding _id 
         //and if we find that id we need to describe how to upadte
