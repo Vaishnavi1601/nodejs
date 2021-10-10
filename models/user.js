@@ -58,7 +58,9 @@ class User {
     }
     //adding new item to the cart
     else{
-      updatedCartItems.push({productId: new ObjectId(product._id), quantity: newQuantity })
+      updatedCartItems.push({
+        //we are storing id of every product in the cart
+        productId: new ObjectId(product._id), quantity: newQuantity })
     }
     
    //here we have updated cart either with quantity increased or with new item added to cart
@@ -80,6 +82,45 @@ class User {
         { $set: { cart: updatedCart } }
       );
   }
+//getcart exist only for user who hascart property
+  getCart(){
+    // return this.cart; //this give us access to user cart
+    const db = getDb();
+
+    //this.cart.item -- object having productid and quantity
+
+
+    const productIds = this.cart.items.map(i =>{   //mapping array of  items(object) TO array of productId(string) and storing in new productIds
+      return i.productId;    
+    });
+
+
+
+    return db.collection('products')
+    //we need to find all products that are in cart 
+    // for that we use "query synatx"
+    //$in -- query operator , it takes an array of ids 
+    
+    .find({_id: {$in: productIds}}) //this returns a cursor with all the matching product
+    .toArray()
+    //in this then method, we have all product data for the products that were in cart.
+    .then(products => {  //array of products from database
+        return products.map(p =>{
+          //here map method have function which will  
+          //return new object for every product with all the existing property and added quantity property
+          return {...p, quantity:this.cart.items.find(i => {  // finding item with the id in ...p
+            //so now we will have cart item and
+            //return true if that item has a productid that is equal to product_id of the product we fetched from database
+            return i.productId.toString() === p._id.toString();
+          })//the find method returns a product object 
+          
+          .quantity  //extracting quantity from cart items
+         };
+        });
+      });  
+    // and therefore for every id which is in array  will be accepted and will get a cursor which holds reference to all products with one of the Ids mentioned in this array
+ }
+
 
   //finding user by userId
   static findById(userId) {

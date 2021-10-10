@@ -51,25 +51,17 @@ exports.getCart = (req, res, next) => {
   req.user
     //request user and get cart related to that user
     .getCart()
-    .then((cart) => {
-      console.log(cart);
-      // we can use cart to fetch the products that are inside it by returing getProducts
-      return (
-        cart
-          .getProducts() //added by sequelize as a method
-          // in this then block we have products that are in this cart
-          .then((products) => {
-            console.log(products);
-            res.render("shop/cart", {
-              path: "/cart",
-              pageTitle: "Your Cart",
-              products: products,
-            });
-          })
-          .catch((err) => console.log(err))
-      );
-    })
-    .catch((err) => console.log(err));
+    .then((products) => {
+      console.log(products);
+      res.render("shop/cart", {
+          path: "/cart",
+          pageTitle: "Your Cart",
+          products: products,
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
 };
 
 //postCart method is responsible for adding new products to the cart
@@ -77,47 +69,15 @@ exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
 
   Product.findById(prodId)
-  .then(product =>  {
-  return req.user.addToCart(product);
-}).then(result =>{
-  console.log(result);
-});
-  // let fetchedCart;
-  // let newQuantity = 1;
+    .then((product) => {
+     return req.user.addToCart(product);
+    })
+    .then((result) => {
+      console.log(result);
+      res.redirect('/cart')
 
-  // req.user
-  //   .getCart()
-  //   .then((cart) => {
-  //     fetchedCart = cart;
-  //     return cart.getProducts({ where: { id: prodId } });
-  //   })
-  //   .then((products) => {
-  //     let product;
-  //     if (products.length > 0) {
-  //       product = products[0];
-  //     }
-
-  //     //adding  a product to the cart whch is already part of the cart
-  //     //increment the quantity
-  //     if (product) {
-  //       const oldQuantity = product.cartItem.quantity; // getting quantity of item already stored in the cart
-  //       newQuantity = oldQuantity + 1;
-  //       return product;
-  //     }
-  //     return Product.findByPk(prodId);
-  //   })
-
-  //   //adding new product for the first time
-  //   .then((product) => {
-  //     return fetchedCart.addProduct(product, {
-  //       through: { quantity: newQuantity },
-  //     });
-  //   })
-  //   .then(() => {
-  //     res.redirect("/cart");
-  //   })
-  //   .catch((err) => console.log(err));
- };
+    });
+};
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
