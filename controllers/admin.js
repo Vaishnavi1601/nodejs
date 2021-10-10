@@ -74,7 +74,8 @@ exports.postEditProduct = (req, res, next) => {
     updatedPrice,
     updatedDesc,
     updatedImageUrl,
-    // new ObjectId(prodId)
+    // new ObjectId(prodId) //passing  an objectId from admin contrller to  Product cinstructor
+   //we can also pass it as a string
     prodId
   );
 

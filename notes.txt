@@ -1,3 +1,0 @@
-sequelize is a 3rd package,  object - relational mapping library
-
-sequelize offers us models to work with our database and allow us to connect with db

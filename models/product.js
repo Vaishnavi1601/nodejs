@@ -11,6 +11,7 @@ class Product {
     this.price = price;
     this.description = description;
     this.imageUrl = imageUrl;
+    //converting the id which is string to object
     this._id = new mongodb.ObjectId(id);
   }
 
