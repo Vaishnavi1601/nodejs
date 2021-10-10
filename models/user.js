@@ -146,18 +146,33 @@ class User {
   //add orders to users
   addOrder() {
     const db = getDb();
-    return db
-      .collection("orders")  
-      .insertOne(this.cart) //inserting cart items to orders collection before clearing it
+    return this.getCart() //here we will get updated products
+      .then((products) => {
+        //this product will have all the information along with the quantity
+
+        //adding cart products and user id name to order object
+        const order = {
+          items: products,
+          user: {
+            _id: new ObjectId(this._id),
+            name: this.name,
+          },
+        };
+        //inserting order into orders collection
+        return db.collection("orders").insertOne(order); //inserting cart items to orders collection before clearing it
+      })
+
       .then((result) => {
-        this.cart = { items: [] };  //empty cart in user object
-        return db
-          .collection("users")
-          //search for user and set the cart to an empty array
-          .updateOne(
-            { _id: new ObjectId(this._id) }, 
-            { $set: { cart: { items: [] } } }  //setting cart empty in db
-          );
+        this.cart = { items: [] }; //empty cart in user object
+        return (
+          db
+            .collection("users")
+            //search for user and set the cart to an empty array
+            .updateOne(
+              { _id: new ObjectId(this._id) },
+              { $set: { cart: { items: [] } } } //setting cart empty in db
+            )
+        );
       });
   }
 
