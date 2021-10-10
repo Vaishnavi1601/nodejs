@@ -14,7 +14,7 @@ class Product {
     this.description = description;
     this.imageUrl = imageUrl;
     //converting the id which is string to object
-    this._id = new mongodb.ObjectId(id);
+    this._id = id ? new mongodb.ObjectId(id):null;
   }
 
   //to save created product in db we use save method

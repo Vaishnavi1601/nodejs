@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 
 const errorController = require("./controllers/error");
 const mongoConnect = require("./util/database").mongoConnect; // importing function
+const User = require('./models/user');
 
 const app = express();
 
@@ -19,14 +20,14 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
   //rech out to DB and  retrieve user with userid 1
-  // User.findByPk(1)
-  //   .then((user) => {
-  //     req.user = user; //adding new field to request object -- sequelize object
-  //     next();
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+  User.findById("61628506ea622e22df805643")
+    .then((user) => {
+      req.user = user; //adding new field to request object -- sequelize object
+      next();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   next();
 });
 
