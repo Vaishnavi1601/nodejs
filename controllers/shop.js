@@ -106,7 +106,7 @@ exports.postOrder = (req, res, next) => {
 exports.getOrders = (req, res, next) => {
   req.user
     //get orders of user
-    .getOrders({ include: ["products"] }) //fetching all products realted to that order, gives back array of products per order
+    .getOrders() //fetching all products realted to that order, gives back array of products per order
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",

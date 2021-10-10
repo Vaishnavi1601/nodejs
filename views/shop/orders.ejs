@@ -9,14 +9,12 @@
                 <h1>Nothing there!</h1>
             <% } else { %>
                 <ul class="orders">
-                    <!-- executed for every order we get -->
                     <% orders.forEach(order => { %>
                         <li class="orders__item">
-                            <h1>Order - # <%= order.id %></h1>
+                            <h1>Order - # <%= order._id %></h1>
                             <ul class="orders__products">
-                                <!-- list of all the item in order -->
-                                <% order.products.forEach(product => { %>
-                                    <li class="orders__products-item"><%= product.title %> (<%= product.orderItem.quantity %>)</li>
+                                <% order.items.forEach(product => { %>
+                                    <li class="orders__products-item"><%= product.title %> (<%= product.quantity %>)</li>
                                 <% }); %>
                             </ul>
                         </li>
