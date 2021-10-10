@@ -53,7 +53,8 @@ exports.getCart = (req, res, next) => {
     .getCart()
     .then((products) => {
       console.log(products);
-      res.render("shop/cart", {
+      res
+        .render("shop/cart", {
           path: "/cart",
           pageTitle: "Your Cart",
           products: products,
@@ -70,22 +71,20 @@ exports.postCart = (req, res, next) => {
 
   Product.findById(prodId)
     .then((product) => {
-     return req.user.addToCart(product);
+      return req.user.addToCart(product);
     })
     .then((result) => {
       console.log(result);
-      res.redirect('/cart')
-
+      res.redirect("/cart");
     });
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  
+
   req.user
     .deleteItemFromCart(prodId)
 
-    
     .then((result) => {
       res.redirect("/cart");
     })
@@ -96,43 +95,8 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 //postOrder taek all the cart items and move them into order
 exports.postOrder = (req, res, next) => {
-  let fetchedCart;
   req.user
-    //get all the cart items
-    .getCart()
-    .then((cart) => {
-      fetchedCart = cart; // storing the cartitem in fetchedCart
-      return cart.getProducts(); //returns all products in the cart
-    })
-
-    //with access to the cart we can get access to the products,
-    //aftr getting access to product move the product into created order
-    .then((products) => {
-      return (
-        req.user
-
-          //we create order to that user
-          .createOrder() //this gives us an order and now we need to add products to that order
-          .then((order) => {
-            //order.addProducts(Products)  //passing products to created order, also we need to set quantity for products
-            //each product have special id and to assign that the products we pass here need to be modified-- done with map method
-
-            return order.addProducts(
-              products.map((product) => {
-                //adding new object quantity to orderItem(table)
-                product.orderItem = { quantity: product.cartItem.quantity }; //get quantity from the cart and store thaht for order item
-                //return product with the added quantity for order
-                return product;
-              })
-            );
-          })
-          .catch((err) => console.log(err))
-      );
-    })
-    .then((result) => {
-      //dropiing all the items in the cart by settuing them to null,--- clearing the cart
-      return fetchedCart.setProducts(null);
-    })
+    .addOrder()
     .then((result) => {
       res.redirect("/orders");
     })
