@@ -93,7 +93,12 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find() //it will give all products
+      //select allows us to define which fiels we want to select or unselect
+    .select('title price -_id')
+    //populate allows us to tell mongoose to populatte certain field with vall the details
+    .populate('userId','name')
     .then((products) => {
+      console.log(products);
       res.render("admin/products", {
         prods: products,
         pageTitle: "Admin Products",
