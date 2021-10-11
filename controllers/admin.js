@@ -105,15 +105,15 @@ exports.getProducts = (req, res, next) => {
 //deleting product
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-
+  console.log(108,prodId);
   //findByIdAndRemove --built in method provided by mongoose
-  // Product.findByIdAndRemove(prodId)
+  Product.findByIdAndRemove(prodId)
 
-    // .then(() => {
-    //   console.log("DESTROYED PRODUCT");
-    //   res.redirect("/admin/products");
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    // });
+    .then(() => {
+      console.log("DESTROYED PRODUCT");
+      res.redirect("/admin/products");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
