@@ -15,7 +15,7 @@ const userSchema = new Schema({
     items: [
       {
           //productId will store an dobjectid bcz it will store a reference to product
-        productId: { type: Schema.Types.ObjectId, required: true },
+        productId: { type: Schema.Types.ObjectId, ref:'Product', required: true },
         quantity: { type: Number, required: true },
       },
     ],

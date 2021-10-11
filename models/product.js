@@ -18,6 +18,12 @@ const productSchema = new Schema({
   imageUrl: {
     type: String,
     required: true,
+  },
+  userId:{
+    type: Schema.Types.ObjectId, //refrence to user 
+    //ref takes a string and we tell to which other mongoose model data is related
+    ref:'User', //referring to user model
+    required:true
   }
 });
 
