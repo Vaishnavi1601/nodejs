@@ -1,3 +1,26 @@
+const mongoose = require("mongoose");
+
+const Schema = mongoose.Schema;
+
+const productSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  imageUrl: {
+    type: String,
+    required: true,
+  },
+});
+
 // const mongodb = require("mongodb");
 
 // //connection to mdb
@@ -47,7 +70,7 @@
 
 //     //2.collection and document
 //     //here we can call collection to tell mogodb into which collection we want to insert something
-//     return (dbOp 
+//     return (dbOp
 
 //       .then((result) => {
 //         console.log(result);
