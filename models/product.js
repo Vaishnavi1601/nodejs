@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema; //allow to create new schema
 
-const Schema = mongoose.Schema;
-
+//definig product schema 
 const productSchema = new Schema({
   title: {
     type: String,
@@ -18,8 +18,13 @@ const productSchema = new Schema({
   imageUrl: {
     type: String,
     required: true,
-  },
+  }
 });
+
+
+//model is a function , its importnt btsto coonnect schema with a name, 
+//and second argument is our schema we define
+module.exports = mongoose.model('Product',productSchema);
 
 // const mongodb = require("mongodb");
 

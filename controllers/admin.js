@@ -15,19 +15,19 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
 
-  //creating new product
-  //by intialising product 
-  const product = new Product(
-    title,
-    price,
-    description,
-    imageUrl,
-    null,
-    req.user._id
-  );
+  //creating new product based on our model
+
+  const product = new Product({
+    //right side of : refers to data we receive in controller action
+    //left side of : refers to keys we defined in our schema
+    title: title,
+    price: price,
+    description: description,
+    imageUrl: imageUrl,
+  });
   // console.log(product);
-  //
   product
+    //this save method is from mogoose
     .save() // to call "then" we goto Product model and we retuern collection and then redirect to products
     .then((result) => {
       console.log("Created Product");
