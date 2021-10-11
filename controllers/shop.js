@@ -18,7 +18,7 @@ exports.getProducts = (req, res, next) => {
 //retrieve single product when we click on details
 exports.getProduct = (req, res, next) => {
   const prodId = req.params.productId; // we get productId here
-
+  //we can pass a string to find by id and mongoose will automatically convert to objectId
   Product.findById(prodId)
     .then((product) => {
       res.render("shop/product-detail", {

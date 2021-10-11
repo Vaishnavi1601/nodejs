@@ -41,9 +41,8 @@ exports.postAddProduct = (req, res, next) => {
 // firstly we need to load the product that gets edited
 //geteditproduct is respondible for fetching products that should be edited and then render it
 exports.getEditProduct = (req, res, next) => {
-  const editMode = req.query.edit;
-
-  console.log(editMode);
+  const editMode = req.query.edit; //true
+  console.log(46, editMode); //true
   if (!editMode) {
     return res.redirect("/");
   }
@@ -70,26 +69,20 @@ exports.postEditProduct = (req, res, next) => {
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
   const updatedDesc = req.body.description;
-
   const updatedImageUrl = req.body.imageUrl;
-  //create a new product constant with updated information
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDesc,
-    updatedImageUrl,
-    // new ObjectId(prodId) //passing  an objectId from admin contrller to  Product cinstructor
-    //we can also pass it as a string
-    prodId
-  );
 
-  //save method will save the changes to our database
-  //if product doesn't exit it will create new one or else it will update the old with newvalues
+  //fetching a product by id
+  Product.findById(prodId)
+    .then((product) => {
+      product.title = updatedTitle;
+      product.price = updatedPrice;
+      product.description = updatedDesc;
+      product.imageUrl = updatedImageUrl;
+      //save method update the changes to our database
+      return product.save();
+    })
 
-  product
-    .save()
-
-    // this then blockk will handle successful  responses from our save promise
+    // redirect once product is saved
     .then((result) => {
       console.log("UPDATED PRODUCT!");
       res.redirect("/admin/products");
@@ -98,7 +91,7 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll() //it will give all products
+  Product.find() //it will give all products
     .then((products) => {
       res.render("admin/products", {
         prods: products,
@@ -112,13 +105,15 @@ exports.getProducts = (req, res, next) => {
 //deleting product
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId)
 
-    .then(() => {
-      console.log("DESTROYED PRODUCT");
-      res.redirect("/admin/products");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  //findByIdAndRemove --built in method provided by mongoose
+  // Product.findByIdAndRemove(prodId)
+
+    // .then(() => {
+    //   console.log("DESTROYED PRODUCT");
+    //   res.redirect("/admin/products");
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
 };
