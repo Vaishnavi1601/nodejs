@@ -122,9 +122,13 @@ exports.postOrder = (req, res, next) => {
   //   .catch(err => console.log(err));
 };
 
+
+//displaying the order
 exports.getOrders = (req, res, next) => {
-  req.user
-    .getOrders()
+  
+  
+  Order.find({"user.userId": req.user._id})//this we give all oredrs that belonng to that user
+
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
