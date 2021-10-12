@@ -90,7 +90,10 @@ exports.postOrder = (req, res, next) => {
       //here we get the products that are in the users cart
       const products = user.cart.items.map((i) => {
         // console.log(92,i);
-        return { quantity: i.quantity, product: i.productId };
+
+        //productId will be object with lot of metadata attached to it 
+        //which is not seen  but with ._doc  we get access to all those data  and then with spread operator we pull out all the data in that documeynt
+        return { quantity: i.quantity, product: {...i.productId._doc } };  
       });
       //creating new order  object by using oredr model
       const order = new Order({
