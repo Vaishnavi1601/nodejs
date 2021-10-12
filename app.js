@@ -50,6 +50,7 @@ mongoose
       }
     });
     app.listen(3000);
+    console.log('CONNECTED======')
   })
   .catch(err => {
     console.log(err);
