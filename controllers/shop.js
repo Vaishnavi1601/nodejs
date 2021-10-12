@@ -9,6 +9,7 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         pageTitle: "All Products",
         path: "/products",
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -24,6 +25,7 @@ exports.getProduct = (req, res, next) => {
         product: product,
         pageTitle: product.title,
         path: "/products",
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -36,6 +38,7 @@ exports.getIndex = (req, res, next) => {
         prods: products,
         pageTitle: "Shop",
         path: "/",
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -54,6 +57,7 @@ exports.getCart = (req, res, next) => {
         path: "/cart",
         pageTitle: "Your Cart",
         products: products,
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -91,9 +95,9 @@ exports.postOrder = (req, res, next) => {
       const products = user.cart.items.map((i) => {
         // console.log(92,i);
 
-        //productId will be object with lot of metadata attached to it 
+        //productId will be object with lot of metadata attached to it
         //which is not seen  but with ._doc  we get access to all those data  and then with spread operator we pull out all the data in that documeynt
-        return { quantity: i.quantity, product: {...i.productId._doc } };  
+        return { quantity: i.quantity, product: { ...i.productId._doc } };
       });
       //creating new order  object by using oredr model
       const order = new Order({
@@ -103,14 +107,13 @@ exports.postOrder = (req, res, next) => {
         },
         products: products,
       });
-      return order.save();  //saves the  order to database
+      return order.save(); //saves the  order to database
     })
     .then((result) => {
       return req.user.clearCart();
     })
-    .then(() =>{
+    .then(() => {
       res.redirect("/orders");
-
     })
     .catch((err) => console.log(err));
 
@@ -122,18 +125,16 @@ exports.postOrder = (req, res, next) => {
   //   .catch(err => console.log(err));
 };
 
-
 //displaying the order
 exports.getOrders = (req, res, next) => {
-  
-  
-  Order.find({"user.userId": req.user._id})//this we give all oredrs that belonng to that user
+  Order.find({ "user.userId": req.user._id }) //this we give all oredrs that belonng to that user
 
     .then((orders) => {
       res.render("shop/orders", {
         path: "/orders",
         pageTitle: "Your Orders",
         orders: orders,
+        isAuthenticated: req.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
