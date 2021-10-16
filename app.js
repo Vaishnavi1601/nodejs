@@ -81,7 +81,7 @@ mongoose
       }
     });
     app.listen(3000);
-    console.log("CONNECTED======");
+    console.log("CONNECTED at port 3000");
   })
   .catch((err) => {
     console.log(err);
