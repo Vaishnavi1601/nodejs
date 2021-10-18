@@ -10,7 +10,7 @@ const errorController = require("./controllers/error");
 const User = require("./models/user");
 
 const MONGODB_URI =
-  "mongodb+srv://vaishnavi123:vaishnavi123@cluster0.7veks.mongodb.net/shop ";
+  "mongodb+srv://vaishnavi123:vaishnavi123@cluster0.7veks.mongodb.net/shop";
 
 const app = express();
 
@@ -37,9 +37,9 @@ app.use(express.static(path.join(__dirname, "public")));
 //saveUninitialized:false -- it ensures that no sessions gets saved for a request where it doesnt need to be saved
 app.use(
   session({
-    secret: "my secret",
+    secret: "my secret",   //key that will sign the cookies
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized:false,
     store: store,
   })
 );
@@ -68,18 +68,6 @@ app.use(errorController.get404);
 mongoose
   .connect(MONGODB_URI)
   .then((result) => {
-    User.findOne().then((user) => {
-      if (!user) {
-        const user = new User({
-          name: "alexbob",
-          email: "max@test.com",
-          cart: {
-            items: [],
-          },
-        });
-        user.save();
-      }
-    });
     app.listen(3000);
     console.log("CONNECTED at port 3000");
   })
