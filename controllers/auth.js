@@ -1,3 +1,5 @@
+const bcrypt = require("bcryptjs");
+
 const User = require("../models/user");
 
 exports.getLogin = (req, res, next) => {
@@ -38,17 +40,21 @@ exports.postSignup = (req, res, next) => {
       if (userDoc) {
         return res.redirect("/signup");
       }
-
+      //.hash will first take the string which we want to hash
+      // second argumrnt is salt value  which will specify how many rounds of hashing will be applied
+      return bcrypt.hash(password, 12);
+    })
+    .then((hashedPassword) => {
       const user = new User({
         email: email,
-        password: password,
+        password: hashedPassword,
         cart: { items: [] },
       });
+
       // return user.save();
-      user.save()
-      .then((result) => {
+      user.save().then((result) => {
         res.redirect("/login");
-      })
+      });
     })
 
     // .then((result) => {
