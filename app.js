@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoDBStore = require("connect-mongodb-session")(session); //this gives us function whixh should execute to which we pass our session
+const csrf = require('csurf');
 
 const errorController = require("./controllers/error");
 const User = require("./models/user");
@@ -19,6 +20,8 @@ const store = new MongoDBStore({
   uri: MONGODB_URI,
   collection: "sessions", //defining collection where sesion will be stored
 });
+
+const csrfProtection = csrf();
 
 app.set("view engine", "ejs");
 app.set("views", "views");
@@ -43,6 +46,8 @@ app.use(
     store: store,
   })
 );
+
+app.use(csrfProtection);
 
 app.use((req, res, next) => {
   if (!req.session.user) {
