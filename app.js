@@ -13,7 +13,7 @@ const MONGODB_URI =
   "mongodb+srv://vaishnavi123:vaishnavi123@cluster0.7veks.mongodb.net/shop";
 
 const app = express();
-
+ 
 //store doesnt know aboout mongooese model so when it fetches data from db it only fetches data not objects and method
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -21,7 +21,7 @@ const store = new MongoDBStore({
 });
 
 app.set("view engine", "ejs");
-app.set("views", "views");
+app.set("views", "views1");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
@@ -44,7 +44,6 @@ app.use(
   })
 );
 
-//storing our user in request
 app.use((req, res, next) => {
   if (!req.session.user) {
     return next();
@@ -66,7 +65,7 @@ app.use(authRoutes);
 app.use(errorController.get404);
 
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true})
   .then((result) => {
     app.listen(3000);
     console.log("CONNECTED at port 3000");
