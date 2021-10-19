@@ -21,7 +21,7 @@ const store = new MongoDBStore({
 });
 
 app.set("view engine", "ejs");
-app.set("views", "views1");
+app.set("views", "views");
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
