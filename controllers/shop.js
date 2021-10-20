@@ -39,7 +39,7 @@ exports.getIndex = (req, res, next) => {
         pageTitle: "Shop",
         path: "/",
         isAuthenticated: req.session.isLoggedIn,
-        csrfToken: req.csrfToken() //this method is provided by csrf middleware, it will generate a token and we store in csrfToken
+        csrfToken: req.csrfToken() //this method is provided by csrf middleware, it will generate a token and we store in csrfToken    
       });
     })
     .catch((err) => {
@@ -103,8 +103,8 @@ exports.postOrder = (req, res, next) => {
       //creating new order  object by using oredr model
       const order = new Order({
         user: {
-          name: req.user.name,
-          userId: req.user, //mongoose wil lpick userid from user
+          email:req.user.email,
+           userId: req.user, //mongoose will pick userid from user
         },
         products: products,
       });
