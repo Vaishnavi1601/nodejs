@@ -137,6 +137,22 @@ form {
   border-color: #ffeb3b;
 }
 
+.user-message {
+  margin:auto;
+  width: 30%;
+  border: 1px solid rgb(155, 155, 223);
+  background: rgb(198, 198, 235);
+  padding: 0.5rem;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.user-message--error {
+  border-color: red;
+  background: rgb(255, 176, 176);
+  color: red;
+}
+
 .backdrop {
   position: fixed;
   top: 0;

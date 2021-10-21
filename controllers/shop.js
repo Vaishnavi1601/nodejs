@@ -9,7 +9,6 @@ exports.getProducts = (req, res, next) => {
         prods: products,
         pageTitle: "All Products",
         path: "/products",
-        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => {
@@ -25,7 +24,6 @@ exports.getProduct = (req, res, next) => {
         product: product,
         pageTitle: product.title,
         path: "/products",
-        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -38,7 +36,6 @@ exports.getIndex = (req, res, next) => {
         prods: products,
         pageTitle: "Shop",
         path: "/",
-        isAuthenticated: req.session.isLoggedIn,
         csrfToken: req.csrfToken() //this method is provided by csrf middleware, it will generate a token and we store in csrfToken    
       });
     })
@@ -58,7 +55,6 @@ exports.getCart = (req, res, next) => {
         path: "/cart",
         pageTitle: "Your Cart",
         products: products,
-        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -99,7 +95,7 @@ exports.postOrder = (req, res, next) => {
         //productId will be object with lot of metadata attached to it
         //which is not seen  but with ._doc  we get access to all those data  and then with spread operator we pull out all the data in that documeynt
         return { quantity: i.quantity, product: { ...i.productId._doc } };
-      });
+      }) ;
       //creating new order  object by using oredr model
       const order = new Order({
         user: {
@@ -135,7 +131,6 @@ exports.getOrders = (req, res, next) => {
         path: "/orders",
         pageTitle: "Your Orders",
         orders: orders,
-        isAuthenticated: req.session.isLoggedIn,
       });
     })
     .catch((err) => console.log(err));
